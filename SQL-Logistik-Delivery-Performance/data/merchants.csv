@@ -1,0 +1,9 @@
+merchant_id,merchant_name,category,sla_hours,partner_since
+MCH0001,QuickMart Express,Grocery,4,2024-02-01
+MCH0002,ElektroHome,Electronics,24,2023-11-15
+MCH0003,TokoBaru Fashion,Fashion,48,2026-06-01
+MCH0004,Berkah Grosir,Grocery,24,2024-05-20
+MCH0005,Rumah Snack Nusantara,F&B,12,2023-09-10
+MCH0006,Gadget Point,Electronics,24,2024-08-01
+MCH0007,Cantika Beauty Store,Beauty,24,2025-01-15
+MCH0008,Kirana Furniture,Furniture,72,2023-06-01
