@@ -1,0 +1,4 @@
+plan_id,plan_name,tier_rank,monthly_price,annual_price
+PLN01,Starter,1,15,150
+PLN02,Growth,2,45,450
+PLN03,Scale,3,120,1200
