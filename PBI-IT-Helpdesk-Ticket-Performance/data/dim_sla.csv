@@ -1,0 +1,5 @@
+priority,target_first_response_hours,target_resolution_hours
+Critical,1,4
+High,4,24
+Medium,8,72
+Low,24,168

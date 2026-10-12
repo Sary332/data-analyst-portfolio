@@ -1,0 +1,8 @@
+category_id,category_name,department
+CAT01,Network,IT Support
+CAT02,Billing,Billing
+CAT03,Account Access,IT Support
+CAT04,Hardware,IT Support
+CAT05,Software Bug,Engineering
+CAT06,Feature Request,Product
+CAT07,Other,General Support

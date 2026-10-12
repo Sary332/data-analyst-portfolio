@@ -1,0 +1,19 @@
+agent_id,agent_name,team,shift,join_date,location
+AGT001,Indah Lestari,Tier 1,Morning,2023-04-06,Remote
+AGT002,Eka Wijaya,Tier 1,Morning,2024-11-28,Jakarta
+AGT003,Luna Permata,Tier 1,Morning,2024-04-06,Remote
+AGT004,Budi Utami,Tier 1,Morning,2023-04-02,Remote
+AGT005,Qori Saputra,Tier 1,Morning,2023-08-03,Jakarta
+AGT006,Made Santoso,Tier 1,Afternoon,2024-09-24,Remote
+AGT007,Putri Halim,Tier 1,Afternoon,2025-04-04,Remote
+AGT008,Hadi Wijaya,Tier 1,Afternoon,2025-03-18,Remote
+AGT009,Tara Lestari,Tier 1,Night,2024-11-24,Remote
+AGT010,Rian Halim,Tier 1,Night,2024-03-22,Remote
+AGT011,Putri Setiawan,Tier 2,Morning,2024-11-14,Jakarta
+AGT012,Dewi Hidayat,Tier 2,Morning,2023-09-17,Jakarta
+AGT013,Joko Nugroho,Tier 2,Morning,2022-08-16,Remote
+AGT014,Andi Wibowo,Tier 2,Afternoon,2024-10-05,Jakarta
+AGT015,Dewi Setiawan,Tier 2,Afternoon,2024-05-07,Jakarta
+AGT016,Nia Permata,Tier 3,Morning,2022-03-18,Jakarta
+AGT017,Oscar Hidayat,Tier 3,Morning,2023-06-21,Jakarta
+AGT018,Gita Permata,Tier 3,Afternoon,2022-10-29,Jakarta
