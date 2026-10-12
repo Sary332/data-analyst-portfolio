@@ -1,0 +1,11 @@
+outlet_id,outlet_name,city,outlet_type,kapasitas_freezer,opening_date
+OUT01,Kudapan Depok - Margonda,Depok,Toko,Besar,2023-06-01
+OUT02,Kudapan Jaksel - Kemang,Jakarta Selatan,Toko,Besar,2023-09-01
+OUT03,Kudapan Jaktim - Cawang,Jakarta Timur,Toko,Sedang,2023-11-01
+OUT04,Kudapan Bekasi - Grand Mall,Bekasi,Kios,Kecil,2024-01-15
+OUT05,Kudapan Tangerang - BSD,Tangerang,Toko,Sedang,2024-02-01
+OUT06,Kudapan Bogor - Pajajaran,Bogor,Toko,Sedang,2024-03-01
+OUT07,Kudapan Jakbar - Puri Indah,Jakarta Barat,Kios,Kecil,2024-05-01
+OUT08,Kudapan Depok - Margonda 2,Depok,Toko,Besar,2024-07-01
+OUT09,Kudapan Bekasi - Summarecon,Bekasi,Kios,Kecil,2024-10-01
+OUT10,Kudapan Tangerang - Alam Sutera,Tangerang,Toko,Sedang,2025-01-01

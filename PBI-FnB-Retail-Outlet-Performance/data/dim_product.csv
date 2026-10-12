@@ -1,0 +1,18 @@
+product_id,product_name,category,unit_cost,unit_price
+PRD001,Es Krim Cup Vanilla,Es Krim,4500.0,8000
+PRD002,Es Krim Cup Coklat,Es Krim,4500.0,8000
+PRD003,Es Krim Cone Strawberry,Es Krim,5000.0,9000
+PRD004,Es Krim Tub Mini Mixed,Es Krim,12000.0,22000
+PRD005,Es Krim Cup Green Tea,es krim,5000.0,9000
+PRD006,Popsicle Mangga,popsicle,2500.0,5000
+PRD007,Popsicle Leci,Popsicle,2500.0,5000
+PRD008,Popsicle Coklat,Popsicle,2800.0,5500
+PRD009,Popsicle Jeruk,Popsicle,2500.0,5000
+PRD010,Keripik Apel,Keripik buah,15000.0,27000
+PRD011,Keripik Nangka,Keripik Buah,16000.0,28000
+PRD012,Keripik Pisang,Keripik Buah,12000.0,22000
+PRD013,Keripik Salak,Keripik Buah,,30000
+PRD014,Kacang Bawang,Cemilan,8000.0,15000
+PRD015,Keripik Singkong Balado,Cemilan,9000.0,16000
+PRD016,Makaroni Pedas,Cemilan,8500.0,15500
+PRD017,Stik Keju,CEMILAN,,18000
