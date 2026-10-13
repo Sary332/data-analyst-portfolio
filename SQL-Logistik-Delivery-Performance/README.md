@@ -56,8 +56,6 @@ Full SQL, in order, with inline findings as comments: [`sql/schema.sql`](sql/sch
 
 **Bandung is the city that needs another driver.** It has the fewest drivers (5) of the four cities but the second-highest order volume, giving it 215 orders per driver vs. 104-134 for the other three. That capacity gap lines up with the longest average duration and the highest breach rate, measured three independent ways.
 
-Full numbers and the complete answer key: [`_jawaban/Logistik-Delivery-Performance-Panduan-Insight.md`](_jawaban/Logistik-Delivery-Performance-Panduan-Insight.md)
-
 ## Reproducing this
 
 1. Create the database and load the CSVs: run `sql/schema.sql` sections 1-5 against SQL Server (adjust the `BULK INSERT` file paths to wherever `data/` ends up locally).
@@ -75,8 +73,6 @@ Expected row counts after loading: 8 merchants, 40 drivers, 5,400 orders, 5,857 
 ├── Logistik-Delivery-Performance-Business-Questions.md # the 6 questions
 ├── Logistik-Delivery-Performance-Data-Dictionary.md    # column-level reference
 ├── Logistik-Delivery-Performance-Portfolio-Card.md     # one-page summary
-├── _jawaban/
-│   └── Logistik-Delivery-Performance-Panduan-Insight.md  # full answer key
 ├── data/
 │   ├── merchants.csv
 │   ├── drivers.csv
