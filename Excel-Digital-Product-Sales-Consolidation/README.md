@@ -2,48 +2,42 @@
 
 ## Business Problem
 
-Kanti Studio (nama bisnis fiktif) menjual produk digital (ebook & template) lewat 3 kanal sekaligus: toko sendiri (KantiStore), marketplace pihak ketiga (KaryaMarket), dan program afiliasi. Masalahnya, data penjualan dari ketiga kanal ini formatnya beda-beda dan belum pernah digabung, jadi pemilik bisnis tidak bisa menjawab pertanyaan sederhana seperti "kanal mana yang sebenarnya paling menguntungkan?" tanpa menyatukan dan membersihkan datanya dulu.
+Kanti Studio (a fictional business) sells digital products (ebooks and templates) through 3 channels at once: its own store (KantiStore), a third-party marketplace (KaryaMarket), and an affiliate program. The problem is that the sales data from the three channels comes in different formats and has never been combined, so the owner cannot answer a simple question like "which channel is actually the most profitable?" without first merging and cleaning the data.
 
-Project ini mengonsolidasikan data mentah dari 3 sumber tersebut menjadi satu model data di Excel, lalu menjawab 6 pertanyaan bisnis kunci soal omzet, margin, dan tren pertumbuhan per kanal.
+This project consolidates the raw data from those 3 sources into a single Excel data model, then answers 6 key business questions about revenue, margin, and growth trends per channel.
 
-*Catatan: seluruh data di project ini adalah data simulasi (sintetis), dibuat menyerupai pola bisnis nyata, bukan data perusahaan asli.*
+*Note: all data in this project is simulated (synthetic), designed to resemble real business patterns. It is not real company data.*
 
-## Screenshot
+## Approach
 
-<!-- Sisipkan di sini:
-1. Power Pivot Diagram View, relasi antar tabel (Fact_Penjualan, Dim_Produk, Calendar)
-2. PivotTable Omzet dan Margin per Channel (jawaban Business Question #1 dan #3)
-3. PivotTable Tren Order Bulanan per Channel (jawaban Business Question #5)
--->
+1. **Power Query.** The 3 raw sources (KantiStore, KaryaMarket, Afiliator) are each cleaned in a separate query: remove duplicates, filter out transactions whose status is not "Completed" (refunds/chargebacks), standardize date formats, and map messy product names (inconsistent capitalization, some without spaces) to consistent product codes using a mapping table.
+2. The three clean queries (`Fact_KantiStore`, `Fact_KaryaMarket`, `Fact_Afiliator`) are combined into a single `Fact_Penjualan` (sales fact) table with Append Queries, after aligning the column schema across all three (date, product code, qty, revenue, fee, channel) so they can be combined safely.
+3. **Power Pivot.** `Fact_Penjualan` is linked to `Dim_Produk` (product price and production cost) and a Calendar table through relationships, so every channel can be analyzed in one model.
+4. **PivotTables and DAX measures** answer the 6 business questions: revenue contribution per channel, the effect of uncleaned data on the channel ranking, net margin per channel, the effect of misreading the affiliate commission format, monthly growth trends, and a recommendation on which channel is most worth pushing.
 
-## Pendekatan
+## Key Formulas/Features
 
-1. **Power Query.** 3 sumber data mentah (KantiStore, KaryaMarket, Afiliator) masing-masing dibersihkan lewat query terpisah: hapus duplikat, filter transaksi yang statusnya bukan "Completed" (refund/chargeback), samakan format tanggal, dan mapping nama produk yang berantakan (huruf besar/kecil, ada yang tanpa spasi) ke kode produk yang konsisten pakai tabel mapping.
-2. Ketiga query hasil bersih (`Fact_KantiStore`, `Fact_KaryaMarket`, `Fact_Afiliator`) digabung jadi satu tabel `Fact_Penjualan` lewat Append Queries, dengan skema kolom yang disamakan dulu di ketiganya (tanggal, kode_produk, qty, omzet, fee, channel) supaya bisa digabung dengan aman.
-3. **Power Pivot.** `Fact_Penjualan` dihubungkan ke `Dim_Produk` (harga dan biaya produksi) dan tabel Calendar lewat relationship, sehingga semua kanal bisa dianalisis dalam satu model.
-4. **PivotTable dan DAX measures** dipakai untuk menjawab 6 pertanyaan bisnis: kontribusi omzet per kanal, dampak data belum dibersihkan terhadap ranking kanal, margin bersih per kanal, dampak salah baca format komisi afiliator, tren pertumbuhan bulanan, dan rekomendasi kanal mana yang paling worth digenjot.
+- `Margin := SUM(Fact_Penjualan[omzet]) - SUMX(Fact_Penjualan, RELATED(Dim_Produk[biaya_produksi])) - SUM(Fact_Penjualan[fee]))`. A DAX measure for net margin per channel, calculated row by row because production cost differs per product.
+- `Total Order := COUNTROWS(Fact_Penjualan)`. Used with the Calendar table to see the monthly order count trend per channel.
+- A Power Query custom column, in two versions for comparison: `if [komisi_tercatat] > 30 then 30 else [komisi_tercatat]` (the wrong version, forcing everything to a percentage) vs. `if [komisi_tercatat] <= 30 then [nilai_penjualan] * [komisi_tercatat] / 100 else [komisi_tercatat]` (the correct version). Used to prove the effect of misreading the affiliate commission format (percentage vs. nominal rupiah).
+- Group By (Advanced mode, with no grouping column). Used as a safe way to calculate aggregate totals without changing the original table.
 
-## Formula/Fitur Kunci
-
-- `Margin := SUM(Fact_Penjualan[omzet]) - SUMX(Fact_Penjualan, RELATED(Dim_Produk[biaya_produksi])) - SUM(Fact_Penjualan[fee]))`. DAX measure untuk margin bersih per kanal, menghitung baris per baris karena biaya produksi beda-beda tiap produk.
-- `Total Order := COUNTROWS(Fact_Penjualan)`. Dipakai bareng tabel Calendar untuk lihat tren jumlah order per bulan per kanal.
-- Custom column Power Query, dua versi untuk perbandingan: `if [komisi_tercatat] > 30 then 30 else [komisi_tercatat]` (versi salah, dipaksa persen semua) versus `if [komisi_tercatat] <= 30 then [nilai_penjualan] * [komisi_tercatat] / 100 else [komisi_tercatat]` (versi benar). Dipakai untuk membuktikan dampak kalau format komisi afiliator (persen vs nominal rupiah) salah dibaca.
-- Group By (Advanced mode, tanpa kolom grouping). Dipakai sebagai cara aman untuk hitung total agregat tanpa mengubah tabel aslinya.
+*Column and table names (`omzet` = revenue, `biaya_produksi` = production cost, `komisi_tercatat` = recorded commission, `nilai_penjualan` = sales value) are in Indonesian, matching the source data.*
 
 ## Findings
 
-Setelah data dari 3 kanal dibersihkan dan dikonsolidasikan, total omzet Rp469.258.000 dengan kontribusi KantiStore 42,4% (Rp199.015.000), KaryaMarket 39,3% (Rp184.306.000), dan Afiliator 18,3% (Rp85.937.000).
+After the data from the 3 channels was cleaned and consolidated, total revenue came to Rp469,258,000, with KantiStore contributing 42.4% (Rp199,015,000), KaryaMarket 39.3% (Rp184,306,000), and Afiliator 18.3% (Rp85,937,000).
 
-Temuan paling penting: kalau omzet KaryaMarket dijumlah langsung dari data mentah tanpa filter status transaksi, hasilnya Rp204.858.000, lebih besar dari KantiStore, sehingga KaryaMarket kelihatan sebagai kanal terbesar. Begitu transaksi Refunded dan Chargeback (9,6% dari total transaksi) dikeluarkan, omzetnya turun ke Rp184.306.000 dan rankingnya berbalik menjadi di bawah KantiStore. Ini bukti nyata kenapa data harus dibersihkan dulu sebelum diambil kesimpulan bisnis.
+The most important finding: if KaryaMarket revenue is summed straight from the raw data without filtering transaction status, the result is Rp204,858,000, higher than KantiStore, which makes KaryaMarket look like the biggest channel. Once Refunded and Chargeback transactions (9.6% of all transactions) are excluded, its revenue drops to Rp184,306,000 and the ranking flips to below KantiStore. This is concrete proof of why data must be cleaned before drawing business conclusions.
 
-Dari sisi margin, gapnya lebih jelas lagi. KantiStore punya margin ratio 85,1% sementara KaryaMarket cuma 58,2%, padahal omzet keduanya mirip. Fee KaryaMarket yang besar (sekitar 30%) plus refund rate yang tinggi membuatnya jauh kurang menguntungkan dari yang terlihat di angka omzet kotor.
+On margin, the gap is even clearer. KantiStore has a margin ratio of 85.1% while KaryaMarket has only 58.2%, even though their revenue is similar. KaryaMarket's large fee (around 30%) plus a high refund rate make it far less profitable than the gross revenue figure suggests.
 
-Untuk kanal Afiliator, cara membaca format komisi juga berdampak signifikan. Komisi yang dihitung benar (mengikuti format asli tiap baris, persen atau nominal rupiah) sebesar Rp15.529.500, sementara kalau semua baris dipaksa dihitung sebagai persentase, hasilnya Rp19.097.100, selisih 23% lebih besar dari yang seharusnya.
+For the Afiliator channel, how the commission format is read also has a significant effect. Commission calculated correctly (following each row's original format, percentage or nominal rupiah) comes to Rp15,529,500, while forcing every row to be calculated as a percentage gives Rp19,097,100, 23% more than it should be.
 
-Dari sisi tren, KantiStore juga tumbuh paling kencang. Rata-rata order bulanan naik dari sekitar 116 ke sekitar 229 (naik 97%) dari 3 bulan pertama ke 3 bulan terakhir, jauh di atas KaryaMarket (naik 36%) dan Afiliator (naik 27%).
+On trend, KantiStore is also growing fastest. Average monthly orders rose from about 116 to about 229 (up 97%) between the first 3 months and the last 3 months, far above KaryaMarket (up 36%) and Afiliator (up 27%).
 
-Kesimpulannya, tiga sudut pandang berbeda (omzet bersih, margin, dan tren pertumbuhan) sama-sama mengarah ke KantiStore sebagai kanal paling worth digenjot tahun depan, bukan KaryaMarket yang omzet mentahnya terlihat paling besar.
+In conclusion, three different angles (net revenue, margin, and growth trend) all point to KantiStore as the channel most worth pushing next year, not KaryaMarket, whose raw revenue looks the biggest.
 
-## Cara Melihat
+## How to View
 
-File Excel final ada di folder `data/` beserta 4 file data mentah yang jadi sumbernya. Download file `.xlsx`-nya lalu buka di Excel (perlu Power Pivot add-in aktif untuk melihat data model dan measure-nya). Cara aktifkan: File > Options > Add-ins > COM Add-ins, lalu centang "Microsoft Power Pivot for Excel".
+The final Excel file is in the `data/` folder together with the 4 raw data files it is built from. Download the `.xlsx` file and open it in Excel (the Power Pivot add-in must be enabled to see the data model and measures). To enable it: File > Options > Add-ins > COM Add-ins, then check "Microsoft Power Pivot for Excel".
