@@ -1,47 +1,49 @@
 # FnB Retail Outlet Performance: Kudapan Nusantara
 
 ## Business Problem
-Kudapan Nusantara (perusahaan fiktif) mulai dari satu toko kecil di Depok tahun 2023, jualan es krim, popsicle, keripik buah, dan cemilan ringan. Dalam 18 bulan terakhir mereka ekspansi jadi 10 outlet di area Jabodetabek, campuran toko berdiri sendiri dan kios kecil di dalam mall atau pasar.
+Kudapan Nusantara (a fictional company) started as one small shop in Depok in 2023, selling ice cream, popsicles, fruit chips, and light snacks. Over the last 18 months it expanded to 10 outlets across Greater Jakarta (Jabodetabek), a mix of standalone shops (*Toko*) and small kiosks (*Kios*) inside malls or markets.
 
-Operations Lead perusahaan cuma punya laporan revenue bulanan per outlet lewat WhatsApp, belum ada dashboard terpusat. Dia perlu tahu outlet mana yang performanya benar-benar bagus untuk mengarahkan keputusan ekspansi atau perbaikan. Masalahnya, "performa bagus" itu sendiri ambigu: dari sisi revenue, atau margin bersih setelah dikurangi produk yang terbuang (waste)? Dashboard ini dibangun untuk menjawab itu.
+The company's Operations Lead only had a monthly revenue report per outlet, sent over WhatsApp, and no central dashboard. They needed to know which outlets were genuinely performing well in order to guide expansion or improvement decisions. The catch is that "performing well" is ambiguous: is it revenue, or net margin after subtracting products lost to waste? This dashboard was built to answer that.
 
-## Screenshot / Demo
-**Overview (Ringkasan Semua Outlet)**
-![Overview bagian atas](images/Overview%20P.a.png)
-![Overview bagian bawah](images/Overview%20P.b.png)
+## Screenshots
+**Overview (all outlets)**
+![Overview, top half](images/Overview%20P.a.png)
+![Overview, bottom half](images/Overview%20P.b.png)
 
 **Outlet Deep Dive**
-![Outlet Deep Dive bagian atas](images/Outlet%20Deep%20Dive%20P.a.png)
-![Outlet Deep Dive bagian bawah](images/Outlet%20Deep%20Dive%20P.b.png)
+![Outlet Deep Dive, top half](images/Outlet%20Deep%20Dive%20P.a.png)
+![Outlet Deep Dive, bottom half](images/Outlet%20Deep%20Dive%20P.b.png)
+
+*Dashboard labels and waste reasons (e.g. "Meleleh" = melted, "Kadaluarsa" = expired, "Kemasan Rusak" = damaged packaging) are in Indonesian, matching the business context.*
 
 ## Approach
-- Star schema: `fact_sales` dan `fact_waste`, dengan dimensi `dim_outlet`, `dim_product`, `dim_calendar`
-- Waste dihitung berdasarkan cost produk (bukan harga jual), supaya nilainya mencerminkan kerugian riil, bukan potensi revenue yang hilang
-- Ranking dan rata-rata perusahaan (revenue, waste, net margin) dihitung lintas seluruh outlet, dipakai sebagai pembanding tiap outlet individual
-- Conditional formatting berbasis DAX measure, bukan cuma warna statis: badge di dashboard berubah teks, warna, dan icon-nya sesuai kondisi data outlet yang sedang dilihat
+- Star schema: `fact_sales` and `fact_waste`, with `dim_outlet`, `dim_product`, and `dim_calendar` as dimensions
+- Waste is valued at product cost (not selling price), so the number reflects the real loss rather than potential lost revenue
+- Rankings and company averages (revenue, waste, net margin) are calculated across all outlets and used as the benchmark for each individual outlet
+- Conditional formatting is driven by DAX measures, not static colors: the badges on the dashboard change text, color, and icon depending on the data of the outlet being viewed
 
 ## Key Findings & Business Impact
-- Revenue tinggi bukan jaminan untung. Satu outlet contoh ada di rank 4 dari 10 di revenue, tapi nilai waste-nya justru paling besar se-perusahaan dan net margin-nya cuma 9,7% (vs rata-rata perusahaan 29,5%). Ranking revenue dan ranking margin bisa kasih jawaban yang berbeda.
-- Akar masalah outlet itu bukan salah jual produk. Komposisi kategori produknya nyaris identik dengan rata-rata perusahaan, beda di bawah 2 poin persentase di semua kategori. Breakdown alasan waste-nya justru didominasi "Meleleh" (sekitar 50%), jauh di atas kadaluarsa atau kemasan rusak, yang mengarah ke masalah cold storage.
-- Secara company wide, waste memakan **28,9%** dari gross margin perusahaan (sekitar Rp 27,7Jt dari Rp 95,7Jt). Net margin susut dari 45,6% (gross) jadi 32,4% (net), gap 13,2 poin murni akibat waste, bukan kenaikan cost produk.
-- Revenue kategori perishable (Es Krim dan Popsicle) punya pola musiman jelas, naik signifikan di musim kemarau dengan puncak di Juli 2024 dan Mei 2025. Berguna untuk perencanaan stok musiman.
+- High revenue does not guarantee profit. One example outlet ranks 4th of 10 on revenue, yet its waste value is the largest in the company and its net margin is only 9.7% (vs. a company average of 29.5%). Revenue rank and margin rank can tell very different stories.
+- That outlet's problem is not selling the wrong products. Its category mix is almost identical to the company average, within 2 percentage points in every category. Its waste reasons are instead dominated by "Meleleh" (melted, around 50%), far ahead of expiry or damaged packaging, which points to a cold storage problem.
+- Company-wide, waste eats **28.9%** of gross margin (about Rp 27.7M out of Rp 95.7M). Net margin shrinks from 45.6% (gross) to 32.4% (net), a 13.2-point gap caused purely by waste, not by higher product costs.
+- Revenue for perishable categories (Ice Cream and Popsicles) follows a clear seasonal pattern, rising significantly in the dry season with peaks in July 2024 and May 2025. Useful for seasonal stock planning.
 
-## Fitur Dashboard
-- 2 halaman: **Ringkasan Semua Outlet** (overview semua outlet dan tabel komparasi revenue/margin) dan **Outlet Deep Dive** (drill down 1 outlet, dipilih lewat slicer)
-- KPI card dengan conditional formatting dinamis: teks, warna, dan icon berubah sesuai ambang batas data, bukan warna tetap
-- Judul dan legend chart di halaman Deep Dive menyesuaikan nama outlet yang dipilih di slicer
-- Edit Interactions dikonfigurasi manual di halaman Ringkasan supaya panel rekomendasi tidak ikut berubah saat slicer diklik, tetap jadi rekomendasi umum
+## Dashboard Features
+- 2 pages: **Overview** (all outlets, with a revenue/margin comparison table) and **Outlet Deep Dive** (drill down into one outlet, chosen with a slicer)
+- KPI cards with dynamic conditional formatting: text, color, and icon change with data thresholds instead of staying fixed
+- Chart titles and legends on the Deep Dive page adapt to the outlet selected in the slicer
+- Edit Interactions are configured manually on the Overview page so the recommendation panel does not change when a slicer is clicked and stays a general recommendation
 
-## Struktur Repo
+## Repository Structure
 ```
-report/   → file .pbix
-data/     → data mentah (fact_sales.csv, fact_waste.csv, dim_outlet.csv, dim_product.csv, dim_calendar.csv)
-images/   → screenshot dashboard
+report/   → .pbix file
+data/     → raw data (fact_sales.csv, fact_waste.csv, dim_outlet.csv, dim_product.csv, dim_calendar.csv)
+images/   → dashboard screenshots
 ```
 
-## Cara Membuka
-Download file dari folder `/report`, buka pakai Power BI Desktop versi terbaru (gratis, tidak butuh fitur Premium).
+## How to Open
+Download the file from the `/report` folder and open it with the latest version of Power BI Desktop (free, no Premium features needed).
 
 ---
 
-**Catatan:** Dataset ini adalah data simulasi, dibuat untuk keperluan portofolio, dirancang menyerupai pola bisnis retail F&B multi-outlet agar analisisnya realistis. Bukan data perusahaan asli.
+**Note:** This dataset is simulated and was created for portfolio purposes, designed to resemble the patterns of a multi-outlet F&B retail business so the analysis stays realistic. It is not real company data.
