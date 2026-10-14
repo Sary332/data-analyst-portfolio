@@ -1,122 +1,122 @@
 # Kedai Renjana Budget & Cash Flow Planning
 
-Model perencanaan kas di Excel (Data Table, Scenario Manager, Goal Seek) untuk kedai kopi 2-outlet yang harus memutuskan dua hal sekaligus: menghadapi kenaikan harga kopi biji dan membuka outlet ketiga tanpa pinjaman bank.
+An Excel cash planning model (Data Table, Scenario Manager, Goal Seek) for a 2-outlet coffee shop that has to make two decisions at once: how to handle a rise in coffee bean prices, and whether to open a third outlet without a bank loan.
 
 ## Business Problem
-Kedai Renjana adalah kedai kopi kecil dengan dua outlet (Renjana Utama sejak Juni 2022, Renjana Kedua sejak April 2024). Supplier kopi biji langganan akan menaikkan harga sekitar 10-20% (belum pasti), dan di saat yang sama pemiliknya, Kirana, sedang menimbang dua lokasi untuk outlet ketiga: Lokasi C (dekat stasiun) dan Lokasi D (dekat perumahan). Modal outlet baru harus 100% dari kas sendiri, dan Kirana belum punya patokan berapa kas cadangan yang dianggap aman.
+Kedai Renjana is a small coffee shop with two outlets (Renjana Utama since June 2022, Renjana Kedua since April 2024). Its regular coffee bean supplier is going to raise prices by roughly 10-20% (not yet certain), and at the same time the owner, Kirana, is weighing two locations for a third outlet: Location C (near the train station) and Location D (near a residential area). The new outlet must be funded 100% from the shop's own cash, and Kirana has no benchmark yet for how much cash reserve counts as safe.
 
-Pertanyaan yang dijawab model ini: lokasi dan waktu buka mana yang paling ringan untuk kas, kapan modalnya balik, dan seberapa besar kenaikan harga kopi yang masih bisa ditanggung kalau semuanya terjadi bersamaan. Modelnya dibuat supaya Kirana (yang bukan orang finance) bisa mengganti asumsi sendiri dan melihat hasilnya langsung.
+The questions this model answers: which location and opening month is easiest on cash, when the investment pays back, and how large a coffee price increase the business can absorb if everything happens at once. The model is built so Kirana (who is not a finance person) can change the assumptions herself and see the results immediately.
 
-## Screenshot
+## Screenshots
 
-**Pola omzet 24 bulan (BQ1)**
+**24-month revenue pattern (BQ1)**
 
-![Omzet bulanan per outlet](images/00-grafik-omzet-bulanan-per-outlet.png)
+![Monthly revenue per outlet](images/00-grafik-omzet-bulanan-per-outlet.png)
 
-**Proyeksi baseline 2026 (BQ3)**: omzet, biaya, margin, dan kas akhir bulan untuk Januari-Desember 2026.
+**2026 baseline projection (BQ3)**: revenue, costs, margin, and month-end cash for January-December 2026.
 
-![Proyeksi 2026](images/01-proyeksi-2026.png)
+![2026 projection](images/01-proyeksi-2026.png)
 
-**Data Table: simulasi kenaikan harga kopi biji (BQ4)**: kas akhir Desember dan rata-rata margin bulanan untuk kenaikan 10%, 15%, 20%. Angka paling atas (tanpa kenaikan) adalah baseline.
+**Data Table: coffee bean price increase simulation (BQ4)**: December ending cash and average monthly margin for increases of 10%, 15%, and 20%. The top figure (no increase) is the baseline.
 
-![Data Table kenaikan harga kopi](images/02-data-table-kenaikan-harga-kopi.png)
+![Data Table for the coffee price increase](images/02-data-table-kenaikan-harga-kopi.png)
 
-**Model outlet baru (BQ5)**: contoh Lokasi D dibuka bulan ke-1. Kurva ramp-up, capex, dan kas gabungan dihitung per bulan.
+**New outlet model (BQ5)**: an example with Location D opening in month 1. The ramp-up curve, capex, and combined cash are calculated month by month.
 
-![Skenario Lokasi D bulan 1](images/03-skenario-lokasi-d-bulan-1.png)
+![Location D scenario, month 1](images/03-skenario-lokasi-d-bulan-1.png)
 
-**Scenario Manager: 5 skenario dalam satu tabel (BQ5)**
+**Scenario Manager: 5 scenarios in one table (BQ5)**
 
 ![Scenario Summary](images/04-scenario-summary.png)
 
-**Kas 2026 untuk kelima skenario terhadap ambang kas minimum (BQ5-BQ6)**: grafik ini digenerate dari angka model.
+**2026 cash for all five scenarios against the minimum cash threshold (BQ5-BQ6)**: this chart is generated from the model's numbers.
 
-![Kas 2026 lima skenario](images/07-grafik-kas-2026-lima-skenario.png)
+![2026 cash across five scenarios](images/07-grafik-kas-2026-lima-skenario.png)
 
-**Ambang kas minimum (BQ6)**
+**Minimum cash threshold (BQ6)**
 
-![Ambang kas minimum](images/06-ambang-kas-minimum.png)
+![Minimum cash threshold](images/06-ambang-kas-minimum.png)
 
-**Goal Seek: hasil pencarian kenaikan harga kopi maksimum (BQ6)**: sel `Proyeksi!O27` setelah Goal Seek dijalankan.
+**Goal Seek: finding the maximum coffee price increase (BQ6)**: cell `Proyeksi!O27` after Goal Seek has run.
 
-![Hasil Goal Seek](images/05-goal-seek-hasil-260persen.png)
+![Goal Seek result](images/05-goal-seek-hasil-260persen.png)
 
-**Toleransi kenaikan harga kopi per skenario (BQ6)**: grafik ini digenerate dari angka model.
+**Coffee price increase tolerance per scenario (BQ6)**: this chart is generated from the model's numbers.
 
-![Toleransi kenaikan harga kopi](images/08-grafik-toleransi-kenaikan-harga-kopi.png)
+![Coffee price increase tolerance](images/08-grafik-toleransi-kenaikan-harga-kopi.png)
 
-## Pendekatan
-1. **Bersihkan data.** Omzet harian dan biaya bulanan kedua outlet punya empat masalah yang sengaja dibuat realistis: jumlah transaksi kosong 5 hari karena mesin kasir rusak, 6 hari tutup renovasi yang tercatat omzet 0, 3 baris duplikat dari masa transisi sistem kasir, dan biaya sewa yang salah masuk kategori "Lain-lain" di dua bulan. Semuanya ditangani sebelum dipakai.
-2. **Ringkas ke tabel bulanan** dengan `SUMIFS` dan PivotTable, lalu hitung margin per outlet dan kas berjalan dari kas awal Rp12 juta (1 Januari 2024).
-3. **Proyeksi baseline 2026**: omzet dan biaya tiap bulan 2026 = bulan yang sama di 2025 dikali rata-rata pertumbuhan tahunan masing-masing outlet.
-4. **Stress test dengan tiga alat what-if**: Data Table untuk sensitivitas harga kopi, Scenario Manager untuk membandingkan lokasi dan waktu buka, Goal Seek untuk mencari titik toleransi kombinasi keduanya.
+## Approach
+1. **Clean the data.** The daily revenue and monthly costs of both outlets have four deliberately realistic problems: the transaction count was blank for 5 days because the cash register broke, 6 days closed for renovation were recorded as revenue 0, 3 duplicate rows came from the cash register system transition, and rent was wrongly booked under "Lain-lain" (Other) in two months. All of them were handled before use.
+2. **Summarize into a monthly table** with `SUMIFS` and PivotTables, then calculate the margin per outlet and the running cash balance from the starting cash of Rp12 million (1 January 2024).
+3. **2026 baseline projection**: each month's revenue and costs in 2026 = the same month in 2025 multiplied by each outlet's average annual growth.
+4. **Stress test with three what-if tools**: a Data Table for coffee price sensitivity, Scenario Manager to compare locations and opening months, and Goal Seek to find the tolerance point for the combination of both.
 
-## Formula/Fitur Kunci
-- `=B14*(1+$O$15)` (sheet `Proyeksi`): dipakai untuk memproyeksikan omzet Januari 2026 dari Januari 2025 dengan rata-rata pertumbuhan tahunan outlet (24,2% Utama, 17,0% Kedua).
-- `=N29 + L29*(1-55%) + L29*55%*(1+$O$27)` (kolom Biaya Utama Akhir): dipakai untuk menaikkan hanya porsi kopi biji (55% dari bahan baku) sebesar persentase di sel input `O27`, sementara biaya lain tidak berubah. Kolom biaya dasar dipisah dari kolom "Akhir" supaya baseline tetap utuh dan tidak ada circular reference.
-- `=IF(F6=0,0,IF($B$1="C", VLOOKUP(MIN(F6,12),$A$6:$C$17,2,FALSE),IF($B$1="D",VLOOKUP(MIN(F6,12),$A$6:$C$17,3,FALSE),0)))` (sheet `Skenario_Outlet_Baru`): dipakai untuk mengambil persen ramp-up omzet outlet baru dari tabel per lokasi berdasarkan "bulan sejak buka", bukan bulan kalender. Mengubah asumsi ramp-up cukup mengedit tabel, tanpa menyentuh formula.
-- `=Proyeksi!I25+Proyeksi!H29+L6` lalu `=M6+Proyeksi!H30+L7`: dipakai untuk kas gabungan = kas akhir 2025 + margin dua outlet eksisting + net kas outlet baru (termasuk capex di bulan buka), dihitung kumulatif per bulan.
-- **Data Table satu variabel** (`Proyeksi!A44:C47`, input `O27`): dipakai untuk melihat kas akhir Desember dan rata-rata margin untuk kenaikan 10/15/20% sekaligus.
-- **Scenario Manager** (5 skenario, sel yang diubah `B1:B2` di `Skenario_Outlet_Baru`): dipakai untuk berpindah antara tidak buka, Lokasi C, Lokasi D, masing-masing dibuka bulan ke-1 atau ke-4, dengan satu klik.
-- **Goal Seek** (set cell `Skenario_Outlet_Baru!M17`, by changing `Proyeksi!O27`): dipakai untuk mencari kenaikan harga kopi biji yang membuat kas akhir 2026 turun tepat ke ambang minimum.
+## Key Formulas/Features
+- `=B14*(1+$O$15)` (sheet `Proyeksi`): used to project January 2026 revenue from January 2025 using the outlet's average annual growth (24.2% Utama, 17.0% Kedua).
+- `=N29 + L29*(1-55%) + L29*55%*(1+$O$27)` (the Biaya Utama Akhir column, i.e. Utama final cost): used to raise only the coffee bean portion (55% of raw materials) by the percentage in input cell `O27`, while other costs stay unchanged. The base cost column is kept separate from the "Akhir" (final) column so the baseline stays intact and there is no circular reference.
+- `=IF(F6=0,0,IF($B$1="C", VLOOKUP(MIN(F6,12),$A$6:$C$17,2,FALSE),IF($B$1="D",VLOOKUP(MIN(F6,12),$A$6:$C$17,3,FALSE),0)))` (sheet `Skenario_Outlet_Baru`): used to pull the new outlet's revenue ramp-up percentage from a per-location table based on "months since opening", not the calendar month. Changing the ramp-up assumption only requires editing the table, without touching the formula.
+- `=Proyeksi!I25+Proyeksi!H29+L6` then `=M6+Proyeksi!H30+L7`: used for combined cash = 2025 ending cash + margin of the two existing outlets + net cash of the new outlet (including capex in the opening month), calculated cumulatively per month.
+- **One-variable Data Table** (`Proyeksi!A44:C47`, input `O27`): used to see December ending cash and average margin for increases of 10/15/20% at once.
+- **Scenario Manager** (5 scenarios, changing cells `B1:B2` in `Skenario_Outlet_Baru`): used to switch between not opening, Location C, and Location D, each opening in month 1 or month 4, with one click.
+- **Goal Seek** (set cell `Skenario_Outlet_Baru!M17`, by changing `Proyeksi!O27`): used to find the coffee bean price increase that brings 2026 ending cash down exactly to the minimum threshold.
 
 ## Findings
 
-**Kondisi awal (BQ1-BQ2)**
-- Kas Kedai Renjana per akhir Desember 2025 adalah **Rp232.145.000**, tumbuh dari Rp12 juta di Januari 2024. Rata-rata margin bulanan 2025: Renjana Utama Rp8,40 juta, Renjana Kedua Rp4,28 juta, gabungan Rp12,68 juta.
-- Renjana Kedua rugi di empat bulan pertama (April-Juli 2024, saat masih ramp-up) dan positif sejak Agustus 2024. Satu-satunya pengecualian adalah Juli 2025 (rugi Rp0,9 juta saat libur semester).
-- Omzet Utama tumbuh rata-rata 24,2% per tahun, Kedua 17,0% per tahun (dihitung dari September-Desember saja, supaya bulan-bulan awal Kedua yang masih ramp-up tidak menggelembungkan angkanya). Biaya tumbuh lebih lambat: 13,1% (Utama) dan 11,0% (Kedua).
-- Pola musiman: Utama memuncak tiap Desember (Rp33,6 juta di 2024, Rp39,9 juta di 2025, sekitar 28-30% di atas bulan sebelumnya), sementara Kedua turun tajam di Juli dan Januari, konsisten dengan libur semester kampus (Juli 2025: Rp12,3 juta vs Rp21-22 juta di bulan sekitarnya).
+**Starting position (BQ1-BQ2)**
+- Kedai Renjana's cash at the end of December 2025 is **Rp232,145,000**, grown from Rp12 million in January 2024. Average monthly margin in 2025: Renjana Utama Rp8.40 million, Renjana Kedua Rp4.28 million, Rp12.68 million combined.
+- Renjana Kedua lost money in its first four months (April-July 2024, while still ramping up) and has been positive since August 2024. The one exception is July 2025 (a Rp0.9 million loss during the semester break).
+- Utama's revenue grows 24.2% per year on average and Kedua's 17.0% (calculated from September-December only, so Kedua's early ramp-up months do not inflate the figure). Costs grow more slowly: 13.1% (Utama) and 11.0% (Kedua).
+- Seasonal pattern: Utama peaks every December (Rp33.6 million in 2024, Rp39.9 million in 2025, about 28-30% above the previous month), while Kedua drops sharply in July and January, consistent with the university semester breaks (July 2025: Rp12.3 million vs. Rp21-22 million in the surrounding months).
 
-**Baseline dan harga kopi (BQ3-BQ4)**
-- Tanpa outlet baru dan tanpa kenaikan harga, kas proyeksi akhir Desember 2026 adalah **Rp458.371.022**, dengan rata-rata margin Rp18,85 juta per bulan.
-- Kenaikan harga kopi 10% / 15% / 20% menurunkan rata-rata margin menjadi Rp17,75 / 17,19 / 16,64 juta per bulan (turun 5,9% / 8,8% / 11,7%), dan kas akhir Desember menjadi Rp445,1 / 438,5 / 431,8 juta. Dampaknya linear: tiap kenaikan 1 poin persen harga kopi menggerus sekitar Rp110 ribu margin per bulan, jadi tidak ada titik patah. Margin tetap positif di seluruh rentang 10-20% karena kopi biji hanya 55% dari bahan baku, dan bahan baku hanya sebagian dari total biaya.
+**Baseline and coffee prices (BQ3-BQ4)**
+- With no new outlet and no price increase, projected cash at the end of December 2026 is **Rp458,371,022**, with an average margin of Rp18.85 million per month.
+- A coffee price increase of 10% / 15% / 20% reduces the average margin to Rp17.75 / 17.19 / 16.64 million per month (down 5.9% / 8.8% / 11.7%), and December ending cash to Rp445.1 / 438.5 / 431.8 million. The effect is linear: every 1 percentage point of coffee price increase erodes about Rp110 thousand of margin per month, so there is no breaking point. Margin stays positive across the whole 10-20% range because coffee beans are only 55% of raw materials, and raw materials are only part of total costs.
 
-**Outlet ketiga (BQ5)**
+**The third outlet (BQ5)**
 
-| Skenario | Kas akhir Des 2026 | Selisih vs tidak buka | Estimasi balik modal |
+| Scenario | Ending cash, Dec 2026 | Difference vs. not opening | Estimated payback |
 |---|---|---|---|
-| Tidak buka outlet baru | Rp458.371.022 | - | - |
-| Lokasi D, buka bulan 1 | Rp431.054.854 | -Rp27.316.168 | bulan ke-19 sejak buka (Juli 2027) |
-| Lokasi D, buka bulan 4 | Rp406.708.585 | -Rp51.662.437 | bulan ke-19 sejak buka (Oktober 2027) |
-| Lokasi C, buka bulan 1 | Rp404.500.973 | -Rp53.870.049 | bulan ke-33 sejak buka (September 2028) |
-| Lokasi C, buka bulan 4 | Rp380.154.704 | -Rp78.216.318 | bulan ke-33 sejak buka (Desember 2028) |
+| No new outlet | Rp458,371,022 | - | - |
+| Location D, open in month 1 | Rp431,054,854 | -Rp27,316,168 | month 19 after opening (July 2027) |
+| Location D, open in month 4 | Rp406,708,585 | -Rp51,662,437 | month 19 after opening (October 2027) |
+| Location C, open in month 1 | Rp404,500,973 | -Rp53,870,049 | month 33 after opening (September 2028) |
+| Location C, open in month 4 | Rp380,154,704 | -Rp78,216,318 | month 33 after opening (December 2028) |
 
-- Tidak ada skenario yang balik modal di dalam 12 bulan proyeksi. Semua skenario outlet baru berakhir di bawah baseline karena capex dibayar di muka sementara omzet baru matang setelah 6-7 bulan.
-- **Lokasi D lebih ringan untuk kas** (selisih Rp26,6 juta di akhir 2026 pada bulan buka yang sama) dan balik modal jauh lebih cepat (sekitar 19 bulan vs 33 bulan). Omzet matang dua lokasi diasumsikan sama (Rp20,8 juta per bulan), jadi pembedanya capex (Rp92 juta vs Rp134 juta) dan sewa tahun kedua (Rp3,8 juta vs Rp5,5 juta per bulan).
-- **Buka lebih cepat lebih baik untuk kas akhir tahun.** Menunda dari bulan 1 ke bulan 4 menurunkan kas akhir 2026 sekitar Rp24,3 juta di kedua lokasi, karena bulan-bulan produktif outlet baru berkurang. Menunda tidak mengurangi risiko, hanya menggeser capex.
-- Perkiraan balik modal memakai omzet matang yang datar di Rp20,8 juta dan sudah memasukkan sewa bulanan mulai tahun kedua.
+- No scenario pays back within the 12-month projection. Every new-outlet scenario ends below the baseline because capex is paid upfront while the new outlet's revenue only matures after 6-7 months.
+- **Location D is easier on cash** (Rp26.6 million better at the end of 2026 for the same opening month) and pays back much faster (about 19 months vs. 33 months). Mature revenue is assumed to be the same for both locations (Rp20.8 million per month), so the differences are capex (Rp92 million vs. Rp134 million) and second-year rent (Rp3.8 million vs. Rp5.5 million per month).
+- **Opening earlier is better for year-end cash.** Delaying from month 1 to month 4 lowers 2026 ending cash by about Rp24.3 million at both locations, because the new outlet has fewer productive months. Delaying does not reduce risk, it only shifts the capex.
+- The payback estimate assumes mature revenue stays flat at Rp20.8 million and includes monthly rent from the second year.
 
-**Gabungan harga kopi naik + outlet baru (BQ6)**
-- Ambang kas cadangan minimum yang dipakai: **Rp86.263.974**, yaitu 4 bulan biaya non-bahan baku (Rp21,57 juta per bulan, rata-rata 2025) berdasarkan rule of thumb UMKM 3-6 bulan.
-- Di skenario terberat yang realistis (Lokasi C dibuka bulan 1, harga kopi naik 20%), kas terendah sepanjang 2026 adalah **Rp110,9 juta**, masih Rp24,6 juta di atas ambang. Jadi kombinasi kenaikan harga dan outlet baru **aman** di seluruh rentang 10-20% dari supplier.
-- Goal Seek pada skenario terbaik (Lokasi D, bulan 1) menunjukkan kas akhir 2026 baru menyentuh ambang kalau harga kopi naik **sekitar 260%**. Dengan ukuran yang lebih ketat (kas terendah di salah satu dari 12 bulan, bukan hanya Desember), angkanya sedikit turun ke 259%, karena kas sempat turun ke Rp85,5 juta di September sebelum pulih. Di skenario paling rentan (Lokasi C, bulan 4) toleransinya 185%. Kesimpulannya sama di semua skenario: ruang amannya sangat besar dibanding rentang 10-20% dari supplier.
-- Karena skenario terberat realistis ternyata aman, opsi Goal Seek di brief (mencari omzet minimum outlet baru atau bulan buka paling awal yang aman) tidak diperlukan. Goal Seek dipakai untuk mencari toleransi harga.
+**Coffee price increase + new outlet combined (BQ6)**
+- The minimum cash reserve threshold used is **Rp86,263,974**, which is 4 months of non-raw-material costs (Rp21.57 million per month, 2025 average), based on the 3-6 month rule of thumb for small businesses.
+- In the heaviest realistic scenario (Location C opening in month 1, coffee price up 20%), the lowest cash point in 2026 is **Rp110.9 million**, still Rp24.6 million above the threshold. So the combination of a price increase and a new outlet is **safe** across the whole 10-20% range the supplier has indicated.
+- Goal Seek on the best scenario (Location D, month 1) shows that 2026 ending cash only touches the threshold if the coffee price rises **about 260%**. With a stricter measure (the lowest cash in any of the 12 months, not just December), the figure drops slightly to 259%, because cash dipped to Rp85.5 million in September before recovering. In the most vulnerable scenario (Location C, month 4) the tolerance is 185%. The conclusion is the same in every scenario: the safety margin is very large compared with the supplier's 10-20% range.
+- Because the heaviest realistic scenario turned out to be safe, the Goal Seek options in the brief (finding the minimum revenue of the new outlet or the earliest safe opening month) were not needed. Goal Seek was used to find the price tolerance instead.
 
-## Keterbatasan & Asumsi
-- Baseline 2026 mengekstrapolasi pertumbuhan 2025 apa adanya. Karena biaya (sebagian besar tetap) tumbuh lebih lambat dari omzet, rata-rata margin 2026 naik sekitar 49% dibanding 2025 (Rp18,85 juta vs Rp12,68 juta per bulan). Ini asumsi yang cukup optimis.
-- Kenaikan harga kopi dihitung sebagai tambahan biaya penuh: tidak ada kenaikan harga jual dan tidak ada penurunan volume.
-- Outlet baru dianggap tidak menggerus omzet outlet eksisting, dan omzet matangnya datar di rata-rata omzet Renjana Kedua enam bulan terakhir (Rp20,8 juta per bulan).
-- Ambang kas minimum memakai definisi luas (semua biaya selain bahan baku). Kalau hanya Sewa + Gaji (Rp19,2 juta per bulan, ambang Rp76,8 juta), toleransi harga kopi di skenario Lokasi D bulan 1 naik ke sekitar 267%.
-- Goal Seek dijalankan pada kas Desember, lalu dicek ulang terhadap kas terendah 12 bulan (lihat Findings).
+## Limitations & Assumptions
+- The 2026 baseline extrapolates 2025 growth as it is. Because costs (mostly fixed) grow more slowly than revenue, the average margin in 2026 rises about 49% over 2025 (Rp18.85 million vs. Rp12.68 million per month). This is a fairly optimistic assumption.
+- The coffee price increase is treated as a full cost increase: no increase in selling prices and no drop in volume.
+- The new outlet is assumed not to cannibalize the existing outlets' revenue, and its mature revenue is flat at the average revenue of Renjana Kedua over the last six months (Rp20.8 million per month).
+- The minimum cash threshold uses a broad definition (all costs except raw materials). If only Rent + Salary is counted (Rp19.2 million per month, threshold Rp76.8 million), the coffee price tolerance in the Location D, month 1 scenario rises to about 267%.
+- Goal Seek was run on December cash, then re-checked against the lowest cash across 12 months (see Findings).
 
-## Cara Melihat
-Download `model/Kedai-Renjana-Budget-Model.xlsx` dan buka dengan Microsoft Excel desktop (Scenario Manager, Data Table, dan Goal Seek tidak tampil sempurna di Google Sheets atau pratinjau GitHub). Excel akan menghitung ulang otomatis saat file dibuka.
+## How to View
+Download `model/Kedai-Renjana-Budget-Model.xlsx` and open it with desktop Microsoft Excel (Scenario Manager, Data Table, and Goal Seek do not display properly in Google Sheets or the GitHub preview). Excel recalculates automatically when the file is opened.
 
-Isi sheet: `Parameter_Asumsi`, `Referensi_Outlet` (input), `Penjualan_Harian` dan `Biaya_Bulanan` (data mentah + PivotTable), `Proyeksi` (histori, baseline 2026, Data Table), `Skenario_Outlet_Baru` (model outlet baru + ambang kas), `Scenario Summary` (hasil Scenario Manager).
+Sheets: `Parameter_Asumsi` (assumption parameters) and `Referensi_Outlet` (outlet reference), the inputs; `Penjualan_Harian` (daily sales) and `Biaya_Bulanan` (monthly costs), raw data + PivotTables; `Proyeksi` (projection), history, 2026 baseline, and Data Table; `Skenario_Outlet_Baru` (new outlet scenario), the new outlet model + cash threshold; `Scenario Summary`, the Scenario Manager results. Sheet and column names are in Indonesian, matching the source data.
 
-Untuk mencoba sendiri:
-- **Ganti skenario:** Data > What-If Analysis > Scenario Manager > pilih skenario > Show. Atau ubah `Skenario_Outlet_Baru!B1` ("Tidak Ada", "C", atau "D") dan `B2` (bulan buka 1-12).
-- **Simulasi harga kopi:** ubah `Proyeksi!O27`. Kembalikan ke 0% untuk melihat baseline.
-- **Ulangi Goal Seek:** Data > What-If Analysis > Goal Seek. Set cell `Skenario_Outlet_Baru!M17`, to value `86263974`, by changing cell `Proyeksi!O27` (dengan `B1` = D dan `B2` = 1). Kembalikan `O27` ke 0% setelahnya.
+To try it yourself:
+- **Switch scenarios:** Data > What-If Analysis > Scenario Manager > pick a scenario > Show. Or change `Skenario_Outlet_Baru!B1` ("Tidak Ada" = none, "C", or "D") and `B2` (opening month 1-12).
+- **Simulate coffee prices:** change `Proyeksi!O27`. Set it back to 0% to see the baseline.
+- **Re-run Goal Seek:** Data > What-If Analysis > Goal Seek. Set cell `Skenario_Outlet_Baru!M17`, to value `86263974`, by changing cell `Proyeksi!O27` (with `B1` = D and `B2` = 1). Set `O27` back to 0% afterwards.
 
-## Struktur Repo
+## Repository Structure
 ```
-model/    -> file model Excel
-data/     -> data mentah sintetis (4 file) yang dipakai di model
-images/   -> screenshot dan grafik untuk README ini
-*.md      -> brief bisnis, business questions, data dictionary
+model/    -> Excel model file
+data/     -> synthetic raw data (4 files) used in the model
+images/   -> screenshots and charts for this README
+*.md      -> business brief, business questions, data dictionary
 ```
 
-## Catatan Data
-Dataset ini adalah data simulasi, dibuat untuk keperluan portofolio, dirancang menyerupai pola bisnis kedai kopi kecil multi-outlet agar analisisnya realistis. Bukan data perusahaan asli. Kedai Renjana, Kirana, dan semua angka di dalamnya fiktif.
+## Data Note
+This dataset is simulated and was created for portfolio purposes, designed to resemble the patterns of a small multi-outlet coffee shop business so the analysis stays realistic. It is not real company data. Kedai Renjana, Kirana, and all the numbers in it are fictional.

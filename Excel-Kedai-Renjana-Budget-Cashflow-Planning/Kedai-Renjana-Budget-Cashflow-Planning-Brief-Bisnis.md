@@ -1,42 +1,42 @@
-# Brief Bisnis - Kedai Renjana Budget & Cash Flow Planning
+# Business Brief - Kedai Renjana Budget & Cash Flow Planning
 
-**Perusahaan (fiktif):** Kedai Renjana
-**Peran kamu:** Data/Financial Analyst lepas, diminta bantu bikin model perencanaan
-**Stakeholder:** Kirana, pemilik sekaligus pemegang pembukuan Kedai Renjana
-**Cara kerja:** ASAP (kolaborasi langsung dari awal)
+**Company (fictional):** Kedai Renjana
+**Your role:** Freelance Data/Financial Analyst, asked to help build a planning model
+**Stakeholder:** Kirana, the owner and also the person who keeps the books for Kedai Renjana
+**Way of working:** ASAP (direct collaboration from the start)
 
 ---
 
-## Latar Belakang
+## Background
 
-Kedai Renjana adalah kedai kopi kecil yang mulai beroperasi Juni 2022 di area perkantoran (outlet pertama, "Renjana Utama"). Karena responnya bagus, April 2024 Kirana buka outlet kedua ("Renjana Kedua") di dekat kampus untuk menjangkau segmen mahasiswa.
+Kedai Renjana is a small coffee shop that began operating in June 2022 in an office area (the first outlet, "Renjana Utama"). Because the response was good, in April 2024 Kirana opened a second outlet ("Renjana Kedua") near a university campus to reach the student segment.
 
-Selama ini Kirana pegang sendiri pembukuannya secara sederhana, catat pemasukan dan pengeluaran per bulan, belum pernah bikin proyeksi ke depan secara formal. Sekarang dia dihadapkan dua keputusan besar sekaligus.
+Until now Kirana has kept the books herself in a simple way, recording income and expenses each month, and has never made a formal forward projection. Now she faces two big decisions at once.
 
 ## Business Problem
 
-> "Supplier kopi biji langgananku bilang harga bakal naik, tapi belum pasti berapa persen, kemungkinan antara 10-20%. Di saat yang sama ada dua tempat yang cocok buat outlet ketiga, tapi aku belum tahu kapan waktu yang aman buat buka, dan mana yang lebih masuk akal. Aku enggak mau pinjam bank, jadi semua modal outlet baru harus dari kas sendiri. Aku butuh semacam model yang bisa aku pakai buat coba-coba skenario sebelum ambil keputusan, bukan cuma feeling."
+> "My regular coffee bean supplier says prices are going up, but not by how much yet, probably between 10-20%. At the same time there are two places that would suit a third outlet, but I don't know when it's safe to open, or which one makes more sense. I don't want a bank loan, so all the capital for the new outlet has to come from my own cash. I need some kind of model I can use to try out scenarios before I decide, not just a gut feeling."
 
-Beberapa hal yang sengaja belum dijelaskan Kirana secara pasti, jadi bagian yang perlu didiskusikan/ditentukan bareng sebelum masuk ke perhitungan skenario:
+There are a few things Kirana has deliberately not pinned down, so these need to be discussed and decided together before moving into the scenario calculations:
 
-- **Ambang kas cadangan yang dianggap "aman".** Kirana belum punya angka pasti. Dia pernah dengar rule of thumb "kas cadangan = 3-6 bulan biaya tetap (Sewa + Gaji)" tapi belum memutuskan mana yang mau dipakai untuk Kedai Renjana.
-- **Kapan waktu paling masuk akal untuk membuka outlet ketiga**, kalau memang jadi dibuka, belum ditentukan (bulan ke berapa dalam proyeksi 12 bulan ke depan).
-- **Berapa persen tepatnya kenaikan harga kopi biji** juga belum pasti (rentang 10-20% dari supplier), jadi perlu disimulasikan di beberapa titik, bukan satu angka tunggal.
+- **The cash reserve threshold considered "safe".** Kirana has no firm number. She has heard the rule of thumb "cash reserve = 3-6 months of fixed costs (Rent + Salary)" but has not decided which to use for Kedai Renjana.
+- **The most sensible time to open the third outlet**, if it is opened at all, has not been decided (which month in the next 12-month projection).
+- **The exact percentage of the coffee bean price increase** is also uncertain (the supplier's range is 10-20%), so it needs to be simulated at several points, not a single number.
 
-## Data yang Tersedia
+## Available Data
 
-- `Penjualan_Harian.csv` - riwayat omzet harian kedua outlet, Januari 2024 - Desember 2025 (24 bulan)
-- `Biaya_Bulanan.xlsx` - riwayat biaya bulanan kedua outlet per kategori (Bahan Baku, Gaji, Sewa, Utilitas, Marketing, Maintenance, Lain-lain)
-- `Parameter_Asumsi.xlsx` - kumpulan asumsi dan angka referensi dari Kirana untuk membangun proyeksi dan skenario (harga kopi, capex 2 kandidat lokasi outlet baru, kurva ramp-up, dan sebagainya)
-- `Referensi_Outlet.xlsx` - data outlet eksisting dan 2 kandidat lokasi outlet baru
+- `Penjualan_Harian.csv` (daily sales) - daily revenue history for both outlets, January 2024 - December 2025 (24 months)
+- `Biaya_Bulanan.xlsx` (monthly costs) - monthly cost history for both outlets by category (Bahan Baku/raw materials, Gaji/salary, Sewa/rent, Utilitas/utilities, Marketing, Maintenance, Lain-lain/other)
+- `Parameter_Asumsi.xlsx` (assumption parameters) - a collection of assumptions and reference figures from Kirana for building the projection and scenarios (coffee price, capex for the 2 candidate new outlet locations, ramp-up curves, and so on)
+- `Referensi_Outlet.xlsx` (outlet reference) - data on the existing outlets and the 2 candidate locations for the new outlet
 
 ## Constraints
 
-- Modal outlet baru harus 100% dari kas internal, tidak ada opsi pinjaman.
-- Proyeksi yang diminta minimal untuk 12 bulan ke depan (Januari - Desember 2026).
-- Model harus bisa dipakai ulang oleh Kirana sendiri untuk mengubah asumsi (bukan cuma satu angka hasil akhir yang statis), jadi butuh Scenario Manager, Data Table, dan/atau Goal Seek, bukan sekadar hitungan manual sekali pakai.
-- Kirana bukan orang finance, jadi sheet ringkasan hasil harus mudah dibaca tanpa perlu paham rumus di baliknya.
+- Capital for the new outlet must come 100% from internal cash, with no loan option.
+- The projection must cover at least the next 12 months (January - December 2026).
+- The model must be reusable by Kirana herself to change the assumptions (not just one static end result), so it needs Scenario Manager, Data Table, and/or Goal Seek, not just a one-off manual calculation.
+- Kirana is not a finance person, so the summary sheet must be easy to read without understanding the formulas behind it.
 
-## Catatan Disclosure Data
+## Data Disclosure Note
 
-*Dataset ini adalah data simulasi, dibuat untuk keperluan portofolio, dirancang menyerupai pola bisnis kedai kopi kecil multi-outlet agar analisisnya realistis. Bukan data perusahaan asli.*
+*This dataset is simulated and was created for portfolio purposes, designed to resemble the patterns of a small multi-outlet coffee shop business so the analysis stays realistic. It is not real company data.*

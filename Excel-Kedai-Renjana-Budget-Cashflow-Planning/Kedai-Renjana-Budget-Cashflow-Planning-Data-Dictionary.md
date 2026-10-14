@@ -1,49 +1,49 @@
 # Data Dictionary - Kedai Renjana Budget & Cash Flow Planning
 
-## Penjualan_Harian.csv (1.374 baris)
-| Kolom | Tipe | Keterangan |
+## Penjualan_Harian.csv (daily sales, 1,374 rows)
+| Column | Type | Description |
 |---|---|---|
-| tanggal | date | Tanggal transaksi |
-| outlet | text | "Renjana Utama" atau "Renjana Kedua". Renjana Kedua baru mulai muncul sejak 1 April 2024 (belum beroperasi sebelumnya, bukan data hilang) |
-| jumlah_transaksi | number | Jumlah transaksi hari itu. Kosong (NaN) untuk Renjana Utama tanggal 8-12 Juli 2024, lihat Catatan Data Quality di file Business Questions |
-| omzet | integer | Total omzet hari itu (IDR). Bernilai 0 untuk Renjana Utama tanggal 12-17 Agustus 2024 (tutup renovasi, bukan data hilang) |
+| tanggal | date | Transaction date |
+| outlet | text | "Renjana Utama" or "Renjana Kedua". Renjana Kedua only appears from 1 April 2024 (it had not opened before, this is not missing data) |
+| jumlah_transaksi | number | Number of transactions that day. Blank (NaN) for Renjana Utama on 8-12 July 2024, see the Data Quality Notes in the Business Questions file |
+| omzet | integer | Total revenue that day (IDR). 0 for Renjana Utama on 12-17 August 2024 (closed for renovation, not missing data) |
 
-Catatan: 1-3 April 2024 (3 hari pertama Renjana Kedua beroperasi) muncul dua kali di file ini (baris terduplikasi), lihat Catatan Data Quality.
+Note: 1-3 April 2024 (the first 3 days Renjana Kedua operated) appear twice in this file (duplicated rows), see the Data Quality Notes.
 
-## Biaya_Bulanan.xlsx (315 baris)
-| Kolom | Tipe | Keterangan |
+## Biaya_Bulanan.xlsx (monthly costs, 315 rows)
+| Column | Type | Description |
 |---|---|---|
-| bulan | text (YYYY-MM) | Bulan pencatatan biaya |
-| outlet | text | "Renjana Utama" atau "Renjana Kedua" |
-| kategori_biaya | text | Bahan Baku, Gaji, Sewa, Utilitas, Marketing, Maintenance, Lain-lain |
-| jumlah | integer | Nominal biaya (IDR) untuk kategori dan bulan itu. Untuk Renjana Kedua bulan 2024-08 dan 2024-09, biaya Sewa tercatat masuk kategori "Lain-lain", lihat Catatan Data Quality |
+| bulan | text (YYYY-MM) | Month the cost was recorded |
+| outlet | text | "Renjana Utama" or "Renjana Kedua" |
+| kategori_biaya | text | Bahan Baku (raw materials), Gaji (salary), Sewa (rent), Utilitas (utilities), Marketing, Maintenance, Lain-lain (other) |
+| jumlah | integer | Cost amount (IDR) for that category and month. For Renjana Kedua in 2024-08 and 2024-09, Sewa (rent) was recorded under "Lain-lain", see the Data Quality Notes |
 
-## Parameter_Asumsi.xlsx (18 baris)
-| Kolom | Tipe | Keterangan |
+## Parameter_Asumsi.xlsx (assumption parameters, 18 rows)
+| Column | Type | Description |
 |---|---|---|
-| parameter | text | Nama asumsi/parameter |
-| nilai | text | Nilai atau rentang nilai asumsi tersebut |
-| keterangan | text | Konteks tambahan dari Kirana soal asumsi itu |
+| parameter | text | Name of the assumption/parameter |
+| nilai | text | The value or range of values for that assumption |
+| keterangan | text | Additional context from Kirana about that assumption |
 
-Berisi antara lain: kas awal per 1 Januari 2024, harga dan estimasi kenaikan kopi biji, capex dan sewa bulanan dua kandidat lokasi outlet baru, kurva ramp-up masing-masing lokasi, dan estimasi biaya operasional outlet baru saat matang. Beberapa baris sengaja berisi rentang atau "belum ditentukan" karena memang itu bagian yang perlu didiskusikan dulu, bukan angka final.
+Contains, among other things: starting cash on 1 January 2024, the coffee bean price and estimated increase, capex and monthly rent for the two candidate locations of the new outlet, the ramp-up curve for each location, and estimated operating costs of the new outlet once mature. Some rows deliberately contain a range or "not yet decided" because that is exactly what needs to be discussed first, not a final number.
 
-## Referensi_Outlet.xlsx (4 baris)
-| Kolom | Tipe | Keterangan |
+## Referensi_Outlet.xlsx (outlet reference, 4 rows)
+| Column | Type | Description |
 |---|---|---|
 | outlet_id | text | PK |
-| nama | text | Nama outlet/lokasi |
-| lokasi | text | Deskripsi lokasi |
-| tipe | text | "Eksisting" (2 outlet yang sudah jalan) atau "Kandidat" (2 lokasi calon outlet ketiga) |
-| tanggal_mulai_operasi | text | Tanggal mulai beroperasi untuk yang eksisting, "TBD" untuk kandidat |
-| luas_m2 | number | Luas outlet |
-| kapasitas_duduk | number | Jumlah kursi |
-| catatan | text | Karakteristik lokasi yang relevan untuk mempertimbangkan potensi omzet |
+| nama | text | Outlet/location name |
+| lokasi | text | Location description |
+| tipe | text | "Eksisting" (the 2 outlets already running) or "Kandidat" (the 2 candidate locations for the third outlet) |
+| tanggal_mulai_operasi | text | Start of operation date for existing outlets, "TBD" for candidates |
+| luas_m2 | number | Outlet area (m2) |
+| kapasitas_duduk | number | Number of seats |
+| catatan | text | Location characteristics relevant to weighing revenue potential |
 
-## Relasi
+## Relationships
 
 ```
-Referensi_Outlet 1-N Penjualan_Harian    (lewat nama outlet, hanya untuk yang tipe Eksisting)
-Referensi_Outlet 1-N Biaya_Bulanan       (lewat nama outlet, hanya untuk yang tipe Eksisting)
+Referensi_Outlet 1-N Penjualan_Harian    (via outlet name, only for type Eksisting)
+Referensi_Outlet 1-N Biaya_Bulanan       (via outlet name, only for type Eksisting)
 ```
 
-`Parameter_Asumsi.xlsx` tidak berelasi langsung lewat key, isinya dipakai sebagai input manual ke sheet proyeksi/model yang akan dibangun (bukan tabel transaksional). Data historis (`Penjualan_Harian`, `Biaya_Bulanan`) cuma mencakup 2 outlet eksisting, dua kandidat lokasi di `Referensi_Outlet` belum punya riwayat transaksi karena memang belum dibuka.
+`Parameter_Asumsi.xlsx` has no direct key relationship; its contents are used as manual inputs to the projection/model sheet that will be built (it is not a transactional table). The historical data (`Penjualan_Harian`, `Biaya_Bulanan`) only covers the 2 existing outlets; the two candidate locations in `Referensi_Outlet` have no transaction history because they have not opened yet.
