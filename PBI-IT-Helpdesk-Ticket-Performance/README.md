@@ -21,7 +21,7 @@ Ardana Cloud (a fictional company) saw a surge in support ticket volume after on
 - Overall SLA Breach Rate is **56.9%**, spread evenly across all priority levels. The problem is systemic, not tied to one priority
 - **Tier 1** is the only team whose resolution time got significantly worse since onboarding (83h to 124h, up 49%), making it the main bottleneck right now
 - A paradox: **Tier 3** breaches SLA most often (77%) yet has the highest CSAT (4.01/5). A high breach rate does not automatically mean unhappy customers
-- Night shift: first response takes **21.3 hours** vs. an 11.7-hour average for the other shifts, with only 2 agents on duty
+- Night shift: first response takes **21.3 hours** vs. an 11.6-hour average for the other shifts, with only 2 agents on duty
 - The Software Bug × Tier 2 combination has a reopen rate far above any other combination (27.7%)
 - **3-headcount recommendation**: prioritize Tier 1 (capacity), then the night shift. Tier 2 is not recommended because it is the most stable and fastest right now, and any issue there is about process quality, not capacity
 
