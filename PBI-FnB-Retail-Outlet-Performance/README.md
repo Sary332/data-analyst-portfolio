@@ -7,14 +7,13 @@ The company's Operations Lead only had a monthly revenue report per outlet, sent
 
 ## Screenshots
 **Overview (all outlets)**
-![Overview, top half](images/Overview%20P.a.png)
-![Overview, bottom half](images/Overview%20P.b.png)
+![Overview, top: KPI cards and revenue vs. net margin per outlet](images/Overview%20P.a.png)
+![Overview, middle: waste share, recommendations, and seasonal pattern](images/Overview%20P.b.png)
+![Overview, bottom: all-outlets summary table](images/Overview%20P.c.png)
 
 **Outlet Deep Dive**
 ![Outlet Deep Dive, top half](images/Outlet%20Deep%20Dive%20P.a.png)
 ![Outlet Deep Dive, bottom half](images/Outlet%20Deep%20Dive%20P.b.png)
-
-*Dashboard labels and waste reasons (e.g. "Meleleh" = melted, "Kadaluarsa" = expired, "Kemasan Rusak" = damaged packaging) are in Indonesian, matching the business context.*
 
 ## Approach
 - Star schema: `fact_sales` and `fact_waste`, with `dim_outlet`, `dim_product`, and `dim_calendar` as dimensions
