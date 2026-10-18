@@ -22,6 +22,8 @@ This project consolidates the raw data from those 3 sources into a single Excel 
 - A Power Query custom column, in two versions for comparison: `if [komisi_tercatat] > 30 then 30 else [komisi_tercatat]` (the wrong version, forcing everything to a percentage) vs. `if [komisi_tercatat] <= 30 then [nilai_penjualan] * [komisi_tercatat] / 100 else [komisi_tercatat]` (the correct version). Used to prove the effect of misreading the affiliate commission format (percentage vs. nominal rupiah).
 - Group By (Advanced mode, with no grouping column). Used as a safe way to calculate aggregate totals without changing the original table.
 
+*Note: the worksheet is named `Fact_Sales`, while the Power Query and Data Model table keeps its original name `Fact_Penjualan`, which is the name used in the DAX measures above.*
+
 *Column and table names (`omzet` = revenue, `biaya_produksi` = production cost, `komisi_tercatat` = recorded commission, `nilai_penjualan` = sales value) are in Indonesian, matching the source data.*
 
 ## Findings

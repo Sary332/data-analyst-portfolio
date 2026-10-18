@@ -37,7 +37,7 @@ The questions this model answers: which location and opening month is easiest on
 
 ![Minimum cash threshold](images/06-ambang-kas-minimum.png)
 
-**Goal Seek: finding the maximum coffee price increase (BQ6)**: cell `Proyeksi!O27` after Goal Seek has run.
+**Goal Seek: finding the maximum coffee price increase (BQ6)**: cell `Projection!O27` after Goal Seek has run.
 
 ![Goal Seek result](images/05-goal-seek-hasil-260persen.png)
 
@@ -52,13 +52,13 @@ The questions this model answers: which location and opening month is easiest on
 4. **Stress test with three what-if tools**: a Data Table for coffee price sensitivity, Scenario Manager to compare locations and opening months, and Goal Seek to find the tolerance point for the combination of both.
 
 ## Key Formulas/Features
-- `=B14*(1+$O$15)` (sheet `Proyeksi`): used to project January 2026 revenue from January 2025 using the outlet's average annual growth (24.2% Utama, 17.0% Kedua).
+- `=B14*(1+$O$15)` (sheet `Projection`): used to project January 2026 revenue from January 2025 using the outlet's average annual growth (24.2% Utama, 17.0% Kedua).
 - `=N29 + L29*(1-55%) + L29*55%*(1+$O$27)` (the Biaya Utama Akhir column, i.e. Utama final cost): used to raise only the coffee bean portion (55% of raw materials) by the percentage in input cell `O27`, while other costs stay unchanged. The base cost column is kept separate from the "Akhir" (final) column so the baseline stays intact and there is no circular reference.
-- `=IF(F6=0,0,IF($B$1="C", VLOOKUP(MIN(F6,12),$A$6:$C$17,2,FALSE),IF($B$1="D",VLOOKUP(MIN(F6,12),$A$6:$C$17,3,FALSE),0)))` (sheet `Skenario_Outlet_Baru`): used to pull the new outlet's revenue ramp-up percentage from a per-location table based on "months since opening", not the calendar month. Changing the ramp-up assumption only requires editing the table, without touching the formula.
-- `=Proyeksi!I25+Proyeksi!H29+L6` then `=M6+Proyeksi!H30+L7`: used for combined cash = 2025 ending cash + margin of the two existing outlets + net cash of the new outlet (including capex in the opening month), calculated cumulatively per month.
-- **One-variable Data Table** (`Proyeksi!A44:C47`, input `O27`): used to see December ending cash and average margin for increases of 10/15/20% at once.
-- **Scenario Manager** (5 scenarios, changing cells `B1:B2` in `Skenario_Outlet_Baru`): used to switch between not opening, Location C, and Location D, each opening in month 1 or month 4, with one click.
-- **Goal Seek** (set cell `Skenario_Outlet_Baru!M17`, by changing `Proyeksi!O27`): used to find the coffee bean price increase that brings 2026 ending cash down exactly to the minimum threshold.
+- `=IF(F6=0,0,IF($B$1="C", VLOOKUP(MIN(F6,12),$A$6:$C$17,2,FALSE),IF($B$1="D",VLOOKUP(MIN(F6,12),$A$6:$C$17,3,FALSE),0)))` (sheet `New_Outlet_Scenario`): used to pull the new outlet's revenue ramp-up percentage from a per-location table based on "months since opening", not the calendar month. Changing the ramp-up assumption only requires editing the table, without touching the formula.
+- `=Projection!I25+Projection!H29+L6` then `=M6+Projection!H30+L7`: used for combined cash = 2025 ending cash + margin of the two existing outlets + net cash of the new outlet (including capex in the opening month), calculated cumulatively per month.
+- **One-variable Data Table** (`Projection!A44:C47`, input `O27`): used to see December ending cash and average margin for increases of 10/15/20% at once.
+- **Scenario Manager** (5 scenarios, changing cells `B1:B2` in `New_Outlet_Scenario`): used to switch between not opening, Location C, and Location D, each opening in month 1 or month 4, with one click.
+- **Goal Seek** (set cell `New_Outlet_Scenario!M17`, by changing `Projection!O27`): used to find the coffee bean price increase that brings 2026 ending cash down exactly to the minimum threshold.
 
 ## Findings
 
@@ -103,12 +103,12 @@ The questions this model answers: which location and opening month is easiest on
 ## How to View
 Download `model/Kedai-Renjana-Budget-Model.xlsx` and open it with desktop Microsoft Excel (Scenario Manager, Data Table, and Goal Seek do not display properly in Google Sheets or the GitHub preview). Excel recalculates automatically when the file is opened.
 
-Sheets: `Parameter_Asumsi` (assumption parameters) and `Referensi_Outlet` (outlet reference), the inputs; `Penjualan_Harian` (daily sales) and `Biaya_Bulanan` (monthly costs), raw data + PivotTables; `Proyeksi` (projection), history, 2026 baseline, and Data Table; `Skenario_Outlet_Baru` (new outlet scenario), the new outlet model + cash threshold; `Scenario Summary`, the Scenario Manager results. Sheet and column names are in Indonesian, matching the source data.
+Sheets: `Assumptions_Parameters` (assumption parameters) and `Outlet_Reference` (outlet reference), the inputs; `Daily_Sales` (daily sales) and `Monthly_Costs` (monthly costs), raw data + PivotTables; `Projection` (projection), history, 2026 baseline, and Data Table; `New_Outlet_Scenario` (new outlet scenario), the new outlet model + cash threshold; `Scenario Summary`, the Scenario Manager results. Sheet and column names are in Indonesian, matching the source data.
 
 To try it yourself:
-- **Switch scenarios:** Data > What-If Analysis > Scenario Manager > pick a scenario > Show. Or change `Skenario_Outlet_Baru!B1` ("Tidak Ada" = none, "C", or "D") and `B2` (opening month 1-12).
-- **Simulate coffee prices:** change `Proyeksi!O27`. Set it back to 0% to see the baseline.
-- **Re-run Goal Seek:** Data > What-If Analysis > Goal Seek. Set cell `Skenario_Outlet_Baru!M17`, to value `86263974`, by changing cell `Proyeksi!O27` (with `B1` = D and `B2` = 1). Set `O27` back to 0% afterwards.
+- **Switch scenarios:** Data > What-If Analysis > Scenario Manager > pick a scenario > Show. Or change `New_Outlet_Scenario!B1` ("None" = none, "C", or "D") and `B2` (opening month 1-12).
+- **Simulate coffee prices:** change `Projection!O27`. Set it back to 0% to see the baseline. The file is saved right after the Goal Seek run (`O27` = 259.9%, Location D, month 1), so set `O27` to 0% first to match the baseline figures in this README.
+- **Re-run Goal Seek:** Data > What-If Analysis > Goal Seek. Set cell `New_Outlet_Scenario!M17`, to value `86263974`, by changing cell `Projection!O27` (with `B1` = D and `B2` = 1). Set `O27` back to 0% afterwards.
 
 ## Repository Structure
 ```
