@@ -23,7 +23,7 @@ The company's Operations Lead only had a monthly revenue report per outlet, sent
 
 ## Key Findings & Business Impact
 - High revenue does not guarantee profit. One example outlet ranks 4th of 10 on revenue, yet its waste value is the largest in the company and its net margin is only 9.7% (vs. a company average of 29.5%). Revenue rank and margin rank can tell very different stories.
-- That outlet's problem is not selling the wrong products. Its category mix is almost identical to the company average, within 2 percentage points in every category. Its waste reasons are instead dominated by "Meleleh" (melted, around 50%), far ahead of expiry or damaged packaging, which points to a cold storage problem.
+- That outlet's problem is not selling the wrong products. Its category mix is almost identical to the company average, within about 2 percentage points in every category. Its waste is dominated by "Meleleh" (melted, around 51%), but melting is also about half of waste company-wide, so the mix of reasons alone does not set this outlet apart. The volume does: all three kiosks (*Kios*) have small freezers and lose 79% to 93% of their gross margin to waste, so cold storage is the leading explanation. The data cannot separate freezer size from the kiosk format itself, because every kiosk has a small freezer and no store does.
 - Company-wide, waste eats **28.9%** of gross margin (about Rp 27.7M out of Rp 95.7M). Net margin shrinks from 45.6% (gross) to 32.4% (net), a 13.2-point gap caused purely by waste, not by higher product costs.
 - Revenue for perishable categories (Ice Cream and Popsicles) follows a clear seasonal pattern, rising significantly in the dry season with peaks in July 2024 and May 2025. Useful for seasonal stock planning.
 
