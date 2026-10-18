@@ -26,6 +26,16 @@ This project consolidates the raw data from those 3 sources into a single Excel 
 
 *Column and table names (`omzet` = revenue, `biaya_produksi` = production cost, `komisi_tercatat` = recorded commission, `nilai_penjualan` = sales value) are in Indonesian, matching the source data.*
 
+## Screenshots
+
+**Data Model (Power Pivot):** `Fact_Penjualan` is linked to `Dim_Produk` and a Calendar table, each one-to-many.
+
+![Data Model](images/00-data-model.png)
+
+**PivotTables:** total revenue and margin per channel (left), monthly order count per channel (middle), and the average monthly orders for the first 3 and last 3 months with the growth used in the trend finding (right).
+
+![PivotTables for revenue, margin, and monthly orders](images/01-pivot-revenue-margin-orders.png)
+
 ## Findings
 
 After the data from the 3 channels was cleaned and consolidated, total revenue came to Rp469,258,000, with KantiStore contributing 42.4% (Rp199,015,000), KaryaMarket 39.3% (Rp184,306,000), and Afiliator 18.3% (Rp85,937,000).
@@ -36,7 +46,7 @@ On margin, the gap is even clearer. KantiStore has a margin ratio of 85.1% while
 
 For the Afiliator channel, how the commission format is read also has a significant effect. Commission calculated correctly (following each row's original format, percentage or nominal rupiah) comes to Rp15,529,500, while forcing every row to be calculated as a percentage gives Rp19,097,100, 23% more than it should be.
 
-On trend, KantiStore is also growing fastest. Average monthly orders rose from about 116 to about 229 (up 97%) between the first 3 months and the last 3 months, far above KaryaMarket (up 36%) and Afiliator (up 27%).
+On trend, KantiStore is also growing fastest. Average monthly orders rose from about 116 to about 229 (up 97%) between the first 3 months and the last 3 months, far above KaryaMarket (up 37%) and Afiliator (up 27%).
 
 In conclusion, three different angles (net revenue, margin, and growth trend) all point to KantiStore as the channel most worth pushing next year, not KaryaMarket, whose raw revenue looks the biggest.
 
