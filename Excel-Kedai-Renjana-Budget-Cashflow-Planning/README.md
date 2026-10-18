@@ -11,19 +11,19 @@ The questions this model answers: which location and opening month is easiest on
 
 **24-month revenue pattern (BQ1)**
 
-![Monthly revenue per outlet](images/00-grafik-omzet-bulanan-per-outlet.png)
+![Monthly revenue per outlet](images/00-chart-monthly-revenue-per-outlet.png)
 
-**2026 baseline projection (BQ3)**: revenue, costs, margin, and month-end cash for January-December 2026.
+**2026 baseline projection (BQ3)**: revenue, costs, margin, and month-end cash for January-December 2026. The input cell at the top right (% increase in coffee bean price) is set to 0%, and the columns to the right split raw materials from other costs.
 
-![2026 projection](images/01-proyeksi-2026.png)
+![2026 projection](images/01-projection-2026.png)
 
-**Data Table: coffee bean price increase simulation (BQ4)**: December ending cash and average monthly margin for increases of 10%, 15%, and 20%. The top figure (no increase) is the baseline.
+**Data Table: coffee bean price increase simulation (BQ4)**: December ending cash and average monthly margin for increases of 10%, 15%, and 20%. The top row (no increase) is the baseline.
 
-![Data Table for the coffee price increase](images/02-data-table-kenaikan-harga-kopi.png)
+![Data Table for the coffee price increase](images/02-data-table-coffee-price-increase.png)
 
-**New outlet model (BQ5)**: an example with Location D opening in month 1. The ramp-up curve, capex, and combined cash are calculated month by month.
+**New outlet model (BQ5)**: Location D opening in month 1. The ramp-up curve, capex, and combined cash are calculated month by month. This screenshot was taken with the coffee price input at exactly 260% (the Goal Seek result from BQ6, rounded up from 259.9%), so the "Combined Ending Cash" column is the stress-test version and December lands at Rp86.1 million, a hair under the Rp86.3 million threshold. At 0% the same column ends at Rp431,054,854. The cash threshold cells are visible at the bottom.
 
-![Location D scenario, month 1](images/03-skenario-lokasi-d-bulan-1.png)
+![Location D scenario, month 1, under the 260% coffee price stress](images/03-new-outlet-scenario-location-d.png)
 
 **Scenario Manager: 5 scenarios in one table (BQ5)**
 
@@ -31,29 +31,29 @@ The questions this model answers: which location and opening month is easiest on
 
 **2026 cash for all five scenarios against the minimum cash threshold (BQ5-BQ6)**: this chart is generated from the model's numbers.
 
-![2026 cash across five scenarios](images/07-grafik-kas-2026-lima-skenario.png)
+![2026 cash across five scenarios](images/07-chart-2026-cash-five-scenarios.png)
 
-**Minimum cash threshold (BQ6)**
+**Minimum cash threshold (BQ6)**: 4 months of non-raw-material costs.
 
-![Minimum cash threshold](images/06-ambang-kas-minimum.png)
+![Minimum cash threshold](images/06-minimum-cash-threshold.png)
 
-**Goal Seek: finding the maximum coffee price increase (BQ6)**: cell `Projection!O27` after Goal Seek has run.
+**Goal Seek: finding the maximum coffee price increase (BQ6)**: cell `Projection!O27` after Goal Seek has run. The cell displays 260%; the unrounded Goal Seek result is 259.9%.
 
-![Goal Seek result](images/05-goal-seek-hasil-260persen.png)
+![Goal Seek result](images/05-goal-seek-result-260pct.png)
 
 **Coffee price increase tolerance per scenario (BQ6)**: this chart is generated from the model's numbers.
 
-![Coffee price increase tolerance](images/08-grafik-toleransi-kenaikan-harga-kopi.png)
+![Coffee price increase tolerance](images/08-chart-coffee-price-tolerance.png)
 
 ## Approach
-1. **Clean the data.** The daily revenue and monthly costs of both outlets have four deliberately realistic problems: the transaction count was blank for 5 days because the cash register broke, 6 days closed for renovation were recorded as revenue 0, 3 duplicate rows came from the cash register system transition, and rent was wrongly booked under "Lain-lain" (Other) in two months. All of them were handled before use.
+1. **Clean the data.** The daily revenue and monthly costs of both outlets have four deliberately realistic problems: the transaction count was blank for 5 days because the cash register broke, 6 days closed for renovation were recorded as revenue 0, 3 duplicate rows came from the cash register system transition, and rent was wrongly booked under "Other" in two months. All of them were handled before use.
 2. **Summarize into a monthly table** with `SUMIFS` and PivotTables, then calculate the margin per outlet and the running cash balance from the starting cash of Rp12 million (1 January 2024).
 3. **2026 baseline projection**: each month's revenue and costs in 2026 = the same month in 2025 multiplied by each outlet's average annual growth.
 4. **Stress test with three what-if tools**: a Data Table for coffee price sensitivity, Scenario Manager to compare locations and opening months, and Goal Seek to find the tolerance point for the combination of both.
 
 ## Key Formulas/Features
 - `=B14*(1+$O$15)` (sheet `Projection`): used to project January 2026 revenue from January 2025 using the outlet's average annual growth (24.2% Utama, 17.0% Kedua).
-- `=N29 + L29*(1-55%) + L29*55%*(1+$O$27)` (the Biaya Utama Akhir column, i.e. Utama final cost): used to raise only the coffee bean portion (55% of raw materials) by the percentage in input cell `O27`, while other costs stay unchanged. The base cost column is kept separate from the "Akhir" (final) column so the baseline stays intact and there is no circular reference.
+- `=N29 + L29*(1-55%) + L29*55%*(1+$O$27)` (the Main Costs Final column): used to raise only the coffee bean portion (55% of raw materials) by the percentage in input cell `O27`, while other costs stay unchanged. The base cost column is kept separate from the "Final" column so the baseline stays intact and there is no circular reference.
 - `=IF(F6=0,0,IF($B$1="C", VLOOKUP(MIN(F6,12),$A$6:$C$17,2,FALSE),IF($B$1="D",VLOOKUP(MIN(F6,12),$A$6:$C$17,3,FALSE),0)))` (sheet `New_Outlet_Scenario`): used to pull the new outlet's revenue ramp-up percentage from a per-location table based on "months since opening", not the calendar month. Changing the ramp-up assumption only requires editing the table, without touching the formula.
 - `=Projection!I25+Projection!H29+L6` then `=M6+Projection!H30+L7`: used for combined cash = 2025 ending cash + margin of the two existing outlets + net cash of the new outlet (including capex in the opening month), calculated cumulatively per month.
 - **One-variable Data Table** (`Projection!A44:C47`, input `O27`): used to see December ending cash and average margin for increases of 10/15/20% at once.
@@ -103,11 +103,11 @@ The questions this model answers: which location and opening month is easiest on
 ## How to View
 Download `model/Kedai-Renjana-Budget-Model.xlsx` and open it with desktop Microsoft Excel (Scenario Manager, Data Table, and Goal Seek do not display properly in Google Sheets or the GitHub preview). Excel recalculates automatically when the file is opened.
 
-Sheets: `Assumptions_Parameters` (assumption parameters) and `Outlet_Reference` (outlet reference), the inputs; `Daily_Sales` (daily sales) and `Monthly_Costs` (monthly costs), raw data + PivotTables; `Projection` (projection), history, 2026 baseline, and Data Table; `New_Outlet_Scenario` (new outlet scenario), the new outlet model + cash threshold; `Scenario Summary`, the Scenario Manager results. Sheet and column names are in Indonesian, matching the source data.
+Sheets: `Assumptions_Parameters` and `Outlet_Reference` (inputs); `Daily_Sales` and `Monthly_Costs` (raw data + PivotTables); `Projection` (history, 2026 baseline, and the Data Table); `New_Outlet_Scenario` (new outlet model + cash threshold); `Scenario Summary` (Scenario Manager results). Sheet and column names are in English; the outlet names are fictional.
 
 To try it yourself:
-- **Switch scenarios:** Data > What-If Analysis > Scenario Manager > pick a scenario > Show. Or change `New_Outlet_Scenario!B1` ("None" = none, "C", or "D") and `B2` (opening month 1-12).
-- **Simulate coffee prices:** change `Projection!O27`. Set it back to 0% to see the baseline. The file is saved right after the Goal Seek run (`O27` = 259.9%, Location D, month 1), so set `O27` to 0% first to match the baseline figures in this README.
+- **Switch scenarios:** Data > What-If Analysis > Scenario Manager > pick a scenario > Show. Or change `New_Outlet_Scenario!B1` ("None", "C", or "D") and `B2` (opening month 1-12).
+- **Simulate coffee prices:** change `Projection!O27`. Set it back to 0% to see the baseline.
 - **Re-run Goal Seek:** Data > What-If Analysis > Goal Seek. Set cell `New_Outlet_Scenario!M17`, to value `86263974`, by changing cell `Projection!O27` (with `B1` = D and `B2` = 1). Set `O27` back to 0% afterwards.
 
 ## Repository Structure
@@ -115,7 +115,6 @@ To try it yourself:
 model/    -> Excel model file
 data/     -> synthetic raw data (4 files) used in the model
 images/   -> screenshots and charts for this README
-*.md      -> business brief, business questions, data dictionary
 ```
 
 ## Data Note
