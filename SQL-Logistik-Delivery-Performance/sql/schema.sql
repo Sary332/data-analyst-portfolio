@@ -486,7 +486,7 @@ ORDER BY vehicle_type, weight_bucket;
 
 /* FINDINGS:
    Driver with the highest Failed/Returned ratio (min. 20 attempts) is DRV00032 (Motor, Makassar): 19 out of 113 attempts
-   (16.81%) failed/returned. 9 out of 10 top drivers are all Motor — only one vehicle type dominates this list.
+   (16.81%) failed/returned. All 10 top drivers are Motor — only one vehicle type dominates this list.
 
    Vehicle type pattern: Motor has a failed/returned ratio of 9.17% (292/3185), almost twice that of Van which is only 5.40% (114/2113).
 

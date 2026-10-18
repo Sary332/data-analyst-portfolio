@@ -8,7 +8,7 @@ All datasets are synthetic and all companies are fictional. Each dataset was bui
 
 | Project | Tools | What I found |
 |---|---|---|
-| [SQL-Logistik-Delivery-Performance](./SQL-Logistik-Delivery-Performance) | SQL | Late deliveries at a delivery startup came mostly from one understaffed city. Bandung had 215 orders per driver against about 122 elsewhere, and a 59% SLA breach rate against 21-25% in the other cities. |
+| [SQL-Logistik-Delivery-Performance](./SQL-Logistik-Delivery-Performance) | SQL | Late deliveries at a delivery startup concentrated in one understaffed city. Bandung had 20% of deliveries but 40% of the late ones, 215 orders per driver against about 122 elsewhere, and a 59% SLA breach rate against 21-25% in the other cities. |
 | [SQL-SaaS-Subscription-Churn-Analysis](./SQL-SaaS-Subscription-Churn-Analysis) | SQL Server (T-SQL) | I tested three conflicting churn theories. Failed payments came before about 56% of all cancellations, and subscriptions with a failed payment were 38 times more likely to cancel within 30 days (61.4% vs 1.6%). |
 | [PBI-IT-Helpdesk-Ticket-Performance](./PBI-IT-Helpdesk-Ticket-Performance) | Power BI | Ticket volume rose 123% after an enterprise client came on board. The team that broke the SLA most often also had the highest customer satisfaction, so the problem was process quality in one team, not capacity everywhere. |
 | [PBI-FnB-Retail-Outlet-Performance](./PBI-FnB-Retail-Outlet-Performance) | Power BI | An outlet ranked 4th of 10 on revenue kept a net margin of only 9.7%, against a company average of 29.5%. Waste took 28.9% of the company's gross margin, and three kiosks with small freezers caused most of it. |
