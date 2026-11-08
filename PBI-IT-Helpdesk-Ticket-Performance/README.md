@@ -10,6 +10,10 @@ Ardana Cloud (a fictional company) saw a surge in support ticket volume after on
 **Deep Dive**
 ![Deep Dive](images/dashboard-deep-dive.png)
 
+**Data Model:** `fact_tickets` is linked to `dim_agents` (agent_id), `dim_category` (category_name), `dim_sla` (priority), and `Dim_Date` (created_date). All four relationships are one-to-many with a single filter direction, and the DAX measures sit in their own `Measure` table.
+
+![Data model](images/data-model.png)
+
 ## Approach
 - Star schema: `fact_tickets` plus the dimensions `dim_agents`, `dim_category`, `dim_sla`, and `Dim_Date`
 - Data cleaning: deduplicated rows created by a system migration, standardized ticket categories, fixed a timezone bug, and excluded tickets without a survey response from the average CSAT
