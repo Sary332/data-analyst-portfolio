@@ -15,6 +15,10 @@ The company's Operations Lead only had a monthly revenue report per outlet, sent
 ![Outlet Deep Dive, top half](images/Outlet%20Deep%20Dive%20P.a.png)
 ![Outlet Deep Dive, bottom half](images/Outlet%20Deep%20Dive%20P.b.png)
 
+**Data Model:** `fact_sales` and `fact_waste` each link to `dim_outlet` (outlet_id), `dim_product` (product_id), and `dim_calendar` (date). All six relationships are one-to-many with a single filter direction, so the two fact tables share the same three dimensions, and the DAX measures sit in a separate `_Measures` table.
+
+![Data model](images/data-model.png)
+
 ## Approach
 - Star schema: `fact_sales` and `fact_waste`, with `dim_outlet`, `dim_product`, and `dim_calendar` as dimensions
 - Waste is valued at product cost (not selling price), so the number reflects the real loss rather than potential lost revenue
